@@ -66,16 +66,7 @@ TukeyHSD(model2)
 ```
 
 ```{r}
-groups2<- groups2%>%
-  group_by(County)
 
-View(groups2)
-waste1<-scale(groups2[,c("WTE_Landfill_Percentage","Onsite_Percentage")])
-fviz_nbclust(waste1, kmeans, method = "wss")
-model4<- kmeans(waste1, centers =3 , nstart = 260)
-fviz_cluster(model4, waste1)
-
-model4$cluster
 ```
 ```{r}
 Drug1<-rep(c("A","B"),each =5)
@@ -104,5 +95,29 @@ anova(model3)
 
 posthoc1<-glht(model1, linfct= mcp(monthtime="Tukey"))
 summary(posthoc1)
+```
+
+```{r}
+df<-groups2%>%
+  group_by(County)%>%
+  summarise_at(vars(WTE_Landfill_Percentage,Onsite_Percentage), list(group = mean))
+
+df
+df<- df%>%
+  column_to_rownames(.,var = "County")
+df
+
+waste1<-scale(df[,c("WTE_Landfill_Percentage_group","Onsite_Percentage_group")])
+fviz_nbclust(waste1, kmeans, method = "wss")
+model4<- kmeans(waste1, centers =4 , nstart = 10)
+fviz_cluster(model4, waste1)
+
+model4$cluster
+```
+```{r}
+df1 <-Wastedata2_1_
+
+df2<-df1%>%
+  group_by
 ```
 
