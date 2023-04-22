@@ -11,15 +11,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 df = data.frame(Wastedata2_1_)
+
 df
-county <-c("Anoka","Carver","CHISAGO", "DAKOTA", "HENNEPIN", "ISANTI", "LE SUEUR", "MILLE LACS", "RAMSEY", "SCOTT", "SHERBURNE", "WASHINGTON", "WRIGHT"
- )
+county <-c("Anoka","Carver","Chisago", "Dakota", "Hennepin", "Isanti", "Le Sueur", "Mille Lacs", "Ramsey", "Scott", "Sherburne", "Washington", "Wright")
 groups1<- df%>%
   filter(County=="Anoka" | County=="Carver"| County =="Chisago" |County=="Dakota" | County=="Hennepin"| County =="Isanti"| County =="Le Sueur" |County=="Mille Lacs" | County=="Ramsey"| County =="Scott"|County=="Sherburne" | County=="Washington"| County =="Wright")%>%
   select(Tax_Group, Year, County,WTE_Landfill_Percentage, Onsite_Percentage)
 
+taxFactor<- factor(groups1$Tax_Group)
 
-groups1
+groups1<-cbind(groups1,taxFactor)
 
 
 #Drug1<-rep(c("A","B"),each =5)
@@ -43,8 +44,65 @@ groups1
 #timedrug <-c(7.3,8.2,10.1,6,9.5,7.1,10.6,11.2,9,8.5,10.9,7.8,5.8,6.5,8.8,4.9,7.9,8.5,5.2)
 #mydrug <- data.frame(drugs, timedrug)
 #mydrug
-model1<-aov(WTE_Landfill_Percentage~Tax_Group, data=groups1 )
+model1<-aov(WTE_Landfill_Percentage~taxFactor, data=groups1 )
 summary(model1)
-#TukeyHSD(model1)
+TukeyHSD(model1)
+
+```
+
+```{r}
+
+groups2<- groups1%>%
+  filter(Tax_Group ==2)
+
+
+Counties<-rep(c(county),c(20))
+wastePer <-groups2$WTE_Landfill_Percentage
+waste1 <- data.frame(Counties, wastePer)
+waste1
+model2<-aov(wastePer~Counties, data=waste1 )
+summary(model2)
+TukeyHSD(model2)
+```
+
+```{r}
+groups2<- groups2%>%
+  group_by(County)
+
+View(groups2)
+waste1<-scale(groups2[,c("WTE_Landfill_Percentage","Onsite_Percentage")])
+fviz_nbclust(waste1, kmeans, method = "wss")
+model4<- kmeans(waste1, centers =3 , nstart = 260)
+fviz_cluster(model4, waste1)
+
+model4$cluster
+```
+```{r}
+Drug1<-rep(c("A","B"),each =5)
+Individuals1<- Counties
+Tax<- groups2$Tax_Group
+Percent<-groups2$WTE_Landfill_Percentage
+df1<-data.frame(Drug1,Individuals1,Tax,Percent)
+df1
+
+
+
+#example
+#Read the IQ_score data into R
+library(nlme)
+library(multcomp)
+library(tidyverse)
+library(ggplot2)
+#Use gather to change the format of the data to be one IV and one DV
+#IQdata<-IQ_score%>%
+#  gather(key= monthtime, value=IQ, Time1, Time2, Time3)
+#IQdata$monthtime<-as.factor(IQdata$monthtime)
+Individual1<-c(Counties)
+#myIQ<-cbind(IQdata,individual)
+model3<-lme(WTE_Landfill_Percentage~Tax, random=~ 1|Individual1,data=groups2)
+anova(model3)
+
+posthoc1<-glht(model1, linfct= mcp(monthtime="Tukey"))
+summary(posthoc1)
 ```
 
