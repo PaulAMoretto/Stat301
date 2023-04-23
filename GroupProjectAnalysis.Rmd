@@ -98,6 +98,7 @@ summary(posthoc1)
 ```
 
 ```{r}
+library(factoextra)
 df<-groups2%>%
   group_by(County)%>%
   summarise_at(vars(WTE_Landfill_Percentage,Onsite_Percentage), list(group = mean))
@@ -118,6 +119,53 @@ model4$cluster
 df1 <-Wastedata2_1_
 
 df2<-df1%>%
-  group_by
+  group_by(Tax_Group)%>%
+  summarise_at(vars(WTE_Landfill_Percentage,Onsite_Percentage), list(group = mean))
+t.test(df2$WTE_Landfill_Percentage_group)
+df2
+  
+```
+```{r}
+library(dplyr)
+df4<-groups1
+#df4
+totalMetroMean<- df4%>%
+  group_by(County)%>%
+  summarise_at(vars(WTE_Landfill_Percentage), list(group = mean))
+#totalMetroMean
+
+summ<-mean(totalMetroMean$group)
+#summ
+
+hennepin<-groups1%>%
+  dplyr::filter(County == "Hennepin" & taxFactor== 2)%>%
+  dplyr::select(Year, County,WTE_Landfill_Percentage)
+hennepin
+
+Metro<-groups1%>%
+  filter(taxFactor ==2)
+Metro
+#groups1<- cbind(factor(groups1$Year))
+Years<-c(1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017)
+Metro2<-groups1%>%
+  
+  dplyr::filter(taxFactor == 2)%>%
+  dplyr::select(Year,WTE_Landfill_Percentage)
+Metro2
+MetroFinal<- aggregate(Metro2$WTE_Landfill_Percentage,by = list(Metro2$Year), FUN = mean)
+MetroFinal
+FinalDF<- left_join(hennepin,MetroFinal, by = join_by(Year==Group.1))
+FinalDF
+FinalImport<-MetroHenn
+FinalImport
+t.test(FinalImport$WTE_Landfill_Percentage~FinalImport$County, data=FinalImport, alternative ="two.side")
+#T-value = -2.3831 and p value = .03327
+#We reject the H0 and accept the Ha that there is evidence that the the fuel efficiency differs significantly . We reject the H0 and accept the Ha. 
+
+#**Graph 
+FinalImport%>%
+  group_by(County)%>%
+  summarize(aveWTE = mean(WTE_Landfill_Percentage), SEaveWTE=sd(WTE_Landfill_Percentage)/sqrt(length(WTE_Landfill_Percentage)),tstar = qt(1-.05/2, length(WTE_Landfill_Percentage)-1))%>%
+  ggplot(aes(x=County, y=aveWTE))+ geom_point()+ geom_errorbar(aes(ymin = aveWTE-tstar*SEaveWTE, ymax = aveWTE+tstar*SEaveWTE))
 ```
 
