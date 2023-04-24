@@ -10,13 +10,15 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+library(dplyr)
+library(tidyverse)
 df = data.frame(Wastedata2_1_)
 
 df
 county <-c("Anoka","Carver","Chisago", "Dakota", "Hennepin", "Isanti", "Le Sueur", "Mille Lacs", "Ramsey", "Scott", "Sherburne", "Washington", "Wright")
 groups1<- df%>%
   filter(County=="Anoka" | County=="Carver"| County =="Chisago" |County=="Dakota" | County=="Hennepin"| County =="Isanti"| County =="Le Sueur" |County=="Mille Lacs" | County=="Ramsey"| County =="Scott"|County=="Sherburne" | County=="Washington"| County =="Wright")%>%
-  select(Tax_Group, Year, County,WTE_Landfill_Percentage, Onsite_Percentage)
+  dplyr::select(Tax_Group, Year, County,WTE_Landfill_Percentage, Onsite_Percentage)
 
 taxFactor<- factor(groups1$Tax_Group)
 
@@ -45,32 +47,7 @@ summary(model2)
 TukeyHSD(model2)
 ```
 
-```{r}
 
-```
-```{r}
-Drug1<-rep(c("A","B"),each =5)
-Individuals1<- Counties
-Tax<- groups2$Tax_Group
-Percent<-groups2$WTE_Landfill_Percentage
-df1<-data.frame(Drug1,Individuals1,Tax,Percent)
-df1
-
-
-
-library(nlme)
-library(multcomp)
-library(tidyverse)
-library(ggplot2)
-
-Individual1<-c(Counties)
-
-model3<-lme(WTE_Landfill_Percentage~Tax, random=~ 1|Individual1,data=groups2)
-anova(model3)
-
-posthoc1<-glht(model1, linfct= mcp(monthtime="Tukey"))
-summary(posthoc1)
-```
 
 ```{r}
 library(factoextra)
@@ -102,35 +79,14 @@ df2
 ```
 ```{r}
 library(dplyr)
-df4<-groups1
-#df4
-totalMetroMean<- df4%>%
-  group_by(County)%>%
-  summarise_at(vars(WTE_Landfill_Percentage), list(group = mean))
-#totalMetroMean
 
-summ<-mean(totalMetroMean$group)
-#summ
 
 hennepin<-groups1%>%
   dplyr::filter(County == "Hennepin" & taxFactor== 2)%>%
   dplyr::select(Year, County,WTE_Landfill_Percentage)
 hennepin
 
-Metro<-groups1%>%
-  filter(taxFactor ==2)
-Metro
 
-Years<-c(1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017)
-Metro2<-groups1%>%
-  
-  dplyr::filter(taxFactor == 2)%>%
-  dplyr::select(Year,WTE_Landfill_Percentage)
-Metro2
-MetroFinal<- aggregate(Metro2$WTE_Landfill_Percentage,by = list(Metro2$Year), FUN = mean)
-MetroFinal
-FinalDF<- left_join(hennepin,MetroFinal, by = join_by(Year==Group.1))
-FinalDF
 FinalImport<-MetroHenn
 FinalImport
 t.test(FinalImport$WTE_Landfill_Percentage~FinalImport$County, data=FinalImport, alternative ="two.side")
