@@ -23,27 +23,7 @@ taxFactor<- factor(groups1$Tax_Group)
 groups1<-cbind(groups1,taxFactor)
 
 
-#Drug1<-rep(c("A","B"),each =5)
-##Individuals1<-1:10
-#Doses<-rep(c("LowDose","HighDose"),each =10)
-#scores<-c(52,61,59,37,49,43,32,21,29,26,50,58,51,34,41,33,30,20,21,22)
-#df1<-data.frame(Drug1,Individuals1,Doses,scores)
-#df1
 
-#fab = rep(c("Cotton","Ploy"), each = 3)
-##time = rep(c("5 min", "10 min","15 min"), each = 6)
-#CleanFab <- c(2,6,6,6,5,3,3,9,9,5,7,5,8,11,12,9,10,12)
-#dfFab <- data.frame(time,fab, CleanFab)
-#dfFab
-#model2<-aov(WTE_Landfill_Percentage~County+Tax_Group+County*Tax_Group, data = groups1)
-#summary(model2)
-#TukeyHSD(model2)
-#interaction.plot(dfFab$fab,dfFab$time,dfFab$CleanFab, data=dfFab)
-
-#drugs<-rep(c("drug1","drug2","drug3"),c(5,7,7))
-#timedrug <-c(7.3,8.2,10.1,6,9.5,7.1,10.6,11.2,9,8.5,10.9,7.8,5.8,6.5,8.8,4.9,7.9,8.5,5.2)
-#mydrug <- data.frame(drugs, timedrug)
-#mydrug
 model1<-aov(WTE_Landfill_Percentage~taxFactor, data=groups1 )
 summary(model1)
 TukeyHSD(model1)
@@ -78,18 +58,13 @@ df1
 
 
 
-#example
-#Read the IQ_score data into R
 library(nlme)
 library(multcomp)
 library(tidyverse)
 library(ggplot2)
-#Use gather to change the format of the data to be one IV and one DV
-#IQdata<-IQ_score%>%
-#  gather(key= monthtime, value=IQ, Time1, Time2, Time3)
-#IQdata$monthtime<-as.factor(IQdata$monthtime)
+
 Individual1<-c(Counties)
-#myIQ<-cbind(IQdata,individual)
+
 model3<-lme(WTE_Landfill_Percentage~Tax, random=~ 1|Individual1,data=groups2)
 anova(model3)
 
@@ -145,7 +120,7 @@ hennepin
 Metro<-groups1%>%
   filter(taxFactor ==2)
 Metro
-#groups1<- cbind(factor(groups1$Year))
+
 Years<-c(1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017)
 Metro2<-groups1%>%
   
@@ -159,10 +134,8 @@ FinalDF
 FinalImport<-MetroHenn
 FinalImport
 t.test(FinalImport$WTE_Landfill_Percentage~FinalImport$County, data=FinalImport, alternative ="two.side")
-#T-value = -2.3831 and p value = .03327
-#We reject the H0 and accept the Ha that there is evidence that the the fuel efficiency differs significantly . We reject the H0 and accept the Ha. 
 
-#**Graph 
+
 FinalImport%>%
   group_by(County)%>%
   summarize(aveWTE = mean(WTE_Landfill_Percentage), SEaveWTE=sd(WTE_Landfill_Percentage)/sqrt(length(WTE_Landfill_Percentage)),tstar = qt(1-.05/2, length(WTE_Landfill_Percentage)-1))%>%
