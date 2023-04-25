@@ -1,0 +1,72 @@
+c7c937ba (Paul 2023-04-24 15:04:28 -0500  1)                                        
+c7c937ba (Paul 2023-04-24 15:04:28 -0500  2)                                    Stat 301
+c7c937ba (Paul 2023-04-24 15:04:28 -0500  3)                            Waste Management Analysis
+c7c937ba (Paul 2023-04-24 15:04:28 -0500  4)                     By Paul Moretto and Jake Olson 4/22/23
+c7c937ba (Paul 2023-04-24 15:04:28 -0500  5)                                        
+c7c937ba (Paul 2023-04-24 15:04:28 -0500  6)    Introduction	
+c7c937ba (Paul 2023-04-24 15:04:28 -0500  7)    Solid waste collection and management regulations have changed drastically since its initial regulation in the 1070's. Taxes have been levied and bills passed to actively capture the impact of waste storage and mitigate the impacts of open site storage. Increased emphasis on the importance of recycling reusable materials and redirecting waste to recycling was leveraged into policy. In 1997, the State of Minnesota instituted a tax on waste tonnage. Within this analysis, we will focus on a few variables we thought may have an impact on lowering landfill waste, with a focus on tonnage taxation. 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500  8)    Questions and Hypothesis
+c7c937ba (Paul 2023-04-24 15:04:28 -0500  9)    In 1997, a tax was levied on trash hauling of 17% commercial and 9.75% residential based on cost related to tonnage. The intention of this tax was to reduce the amount of trash in landfills. This tax begs the question, was average landfill tonnage greater in 1991-1997 than in 1998-2017, specifically in the Metropolitan Area. Additionally, since larger populations create more and waste and capturing and diverting waste to recycling is a key rationale for the tax we want to know if Hennepin County's, the largest county in Minnesota, post-tax landfill mean waste percentage less than the population (MN Metro area) post-tax mean landfill waste Percentage? Finally, due to the waste management tax we wanted to analyze the onsite waste tonnage before and after the tax to see if the amount of onsite waste (non-hauled waste burned on location) increased to avoid additional taxes. 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 10)    We will be working with "Wastedata2" using the variables Year, County, WTE and landfill. Additionally, we developed additional variables based off the raw data to understand the difference between pre-tax and post-tax waste distribution. One variable will be labeled (Tax_Group) as a "factor" to separate the groups of years. We also created variables for the percentage of Landfill and Onsite waste, respectively named (WTE_Landfill_Percentage) and (Onsite_Percentage) type "dbl." "WTE" data is included in the total landfill waste percentage since this material would contribute to the landfill if it wasn't burned for energy. 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 11)    
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 12)    
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 13)    
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 14)    Question 1: Pre-tax mean landfill percent of total waste was greater than post tax?
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 15)    HO: Mu(Pre-Tax)=Mu(Post-Tax)
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 16)    Ha: Mu(Pre-Tax)>Mu(Post-Tax)
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 17)    
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 18)    Question 1.5: Was Hennepin County's mean landfill percent  greater than the Metro as a whole?
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 19)    HO: Mu(Hennepin)=Mu(Metro)
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 20)    Ha: Mu(Hennepin)<Mu(Metro)
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 21)    
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 22)    Question 2: Was there an increase in on-site disposal post tax?
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 23)    HO: Mu(on-site pre-tax) = Mu(on-site post-tax)
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 24)    Ha: Mu(on-site pre-tax)<Mu(on-site post-tax)
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 25)    
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 26)    Methods
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 27)    
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 28) Given this information, can we identify a correlation between the 1997 Waste Management tax and the reduction in total percentage of landfill waste? The Null hypothesis will assume that the 1997 tax has no effect on the total landfill percentage in the Metropolitan Area. Alternatively, the 1997 tax significantly decreased total landfill percentage in the Metropolitan Area. To Analyze the pre-tax and post-tax year groups by "WTE_Landfill_percentage" we used an Independent T-test. Based on the results of the test we can reject the null hypothesis and accept the alternative hypothesis that the post-tax years of landfill percent share of trash was reduced with a p-value of .013. 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 29) 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 30) -Tax was a factor in the reduction of overall tonnage in the Metro Area.
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 31)    To further analyze Hennepin county's post-tax mean landfill percentage against the population's mean (MN Metro counties) we ran a Welch Two Sample t-test. Based on the Welch Two Sample, Hennepin County's mean was not less than the Metro Area. We therefore fail to reject the null hypothesis. 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 32) 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 33) -Hennepin County mean was greater than the Metro Area mean. 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 34) In addition, we wanted to see if there were patterns between counties by their tendency to generate onsite waste vs landfill waste. We used a hierarchical cluster analysis to classify these tendencies.
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 35) 	We used an Optimal Cluster graph to determine the number of clusters and settled on four. We then passed this to the function fviz_cluseter and returned a graph indicating the clusters. 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 36) 	 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 37)    The clusters follow a spatial pattern related to proximity. This may suggest additional policies or local practices that need to be ascertained. 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 38)    Finally, we want to understand if there was an increase in on-site disposal increase due to the increase in taxes to avoid the tax. We used a one-sample T-test with the alternative hypothesis Mu(on-site pre-tax)<Mu(on-site post-tax). 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 39)    The p-value is greater than .05 at .10 so we fail to reject the null hypothesis. We do not have sufficient evidence that there was an increase in on-site disposal due to the levying of the tax. 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 40)    
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 41)    Conclusion
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 42) 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 43) 	We can draw a reasonable basis for the overall effectiveness of the tax to reduce the share of tonnage to WTE sites and landfills. We rejected the null hypothesis and accepted the alternative hypothesis that there was a reduction in percentage waste with a p-value of .01.
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 44) 	We failed to reject the null hypothesis that Hennepin County had a significantly less proportion of landfill waste reduction compared to the Metro Area as a whole with a p-value = 1. There was no evidence to suggest that Hennepin County had less proportion. 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 45) 	Finally, we failed to reject the null hypothesis that on-site disposal increased after the tax. We conducted a one sample t-text and failed to reject the null hypothesis with a p-value of .099. There was no evidence to suggest that there was an increase in on-site disposal due to the tax. 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 46) 	For the group, we found that there were some surprising outcomes presented through the data. We suspected that there might be an increase in on-site disposal due to the tax adverse nature of some individuals. This ended up being not the case in this analysis. Additionally, it was interesting to observe the clustering effect and the spatial nature of the clustering. 
+cb8aac68 (Paul 2023-04-24 15:59:00 -0500 47) 	Clearly, there are several reasons why individuals choose to recycle or not. We would need to further look at additional policies and trends and incorporate those into the analysis. Also, general availability of recycling and the single-sort technology had contributed to increased awareness and participation at some level and should be considered. 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 48) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 49) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 50) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 51) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 52) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 53) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 54) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 55) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 56) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 57) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 58) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 59) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 60) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 61) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 62) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 63) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 64) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 65) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 66) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 67) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 68) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 69) 
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 70) Sources cited
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 71) https://www.revisor.mn.gov/statutes/cite/16A.531
+c7c937ba (Paul 2023-04-24 15:04:28 -0500 72) 
